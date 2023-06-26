@@ -55,9 +55,8 @@ Once you clone the project, open the solution in the latest release of [Visual S
 
 This application can be deployed to [Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps), to learn how, check out [our quickstart guide](https://aka.ms/blazor-swa/quickstart).
 
-## Test Authentication
+## Run the App
 1. Start SWA 
-swa start --app-devserver-url http://localhost:5000 --api-devserver-url http://localhost:7071 --data-api-devserver-url http://localhost:5000
-swa start --app-devserver-url http://localhost:5000 --api-devserver-url http://localhost:7071 --data-api-location .\swa-db-connections\
+swa start --app-devserver-url http://localhost:7025 --api-devserver-url http://localhost:7071 --data-api-location swa-db-connections
 
 2. Navigate to http://localhost:[PORT], where [PORT] is the one returned by the SWA CLI
