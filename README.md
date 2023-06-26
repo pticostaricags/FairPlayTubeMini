@@ -57,6 +57,7 @@ This application can be deployed to [Azure Static Web Apps](https://docs.microso
 
 ## Test Authentication
 1. Start SWA 
-swa start --app-devserver-url http://localhost:5000 --api-devserver-url http://localhost:7071
+swa start --app-devserver-url http://localhost:5000 --api-devserver-url http://localhost:7071 --data-api-devserver-url http://localhost:5000
+swa start --app-devserver-url http://localhost:5000 --api-devserver-url http://localhost:7071 --data-api-location .\swa-db-connections\
 
 2. Navigate to http://localhost:[PORT], where [PORT] is the one returned by the SWA CLI
