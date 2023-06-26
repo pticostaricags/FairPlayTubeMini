@@ -7,7 +7,14 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="/.auth/login/github">Login</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/.auth/logout">Log out</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/.auth/login/github">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">

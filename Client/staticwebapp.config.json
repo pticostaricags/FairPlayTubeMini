@@ -1,5 +1,23 @@
 {
-    "navigationFallback": {
-        "rewrite": "/index.html"
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
+  "routes": [
+    {
+      "route": "/.auth/login/twitter",
+      "statusCode": 404
+    },
+    {
+      "route": "/.auth/login/aad",
+      "statusCode": 404
+    },
+    {
+      "route": "/",
+      "allowedRoles": [ "anonymous", "authenticated" ]
+    },
+    {
+      "route": "/User/UserIndex",
+      "allowedRoles": ["authenticated"]
     }
+  ]
 }
