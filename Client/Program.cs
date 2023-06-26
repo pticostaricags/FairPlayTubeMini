@@ -10,10 +10,16 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) });
+
+builder.Services.AddScoped<IUserProfileService, AzureSWAUserProfileService>(sp =>
+{
+    var env = sp.GetRequiredService<IWebAssemblyHostEnvironment>();
+    return new AzureSWAUserProfileService(env!.BaseAddress);
+});
 builder.Services.AddAuthorizationCore()
     .AddScoped<AuthenticationStateProvider, AzureSWAAuthenticationStateProvider>(sp => 
     {
-        var env = sp.GetService<IWebAssemblyHostEnvironment>();
-        return new AzureSWAAuthenticationStateProvider(env!.BaseAddress);
+        var userProfileService = sp.GetRequiredService<IUserProfileService>();
+        return new AzureSWAAuthenticationStateProvider(userProfileService);
     });
 await builder.Build().RunAsync();

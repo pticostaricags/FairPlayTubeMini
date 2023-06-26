@@ -1,0 +1,48 @@
+﻿@page "/User/Profile"
+@attribute [Authorize]
+
+<h3>Profile</h3>
+
+@if (this._userInfo != null)
+{
+    <div class="mb-3">
+        <label class="form-label">@nameof(this._userInfo.ClientPrincipal.IdentityProvider)</label>
+        <span class="form-label">@this._userInfo!.ClientPrincipal!.IdentityProvider</span>
+    </div>
+    @if (this._userInfo.ClientPrincipal.Claims?.Length > 0)
+    {
+        <div class="mb-3">
+            <label class="form-label">@nameof(this._userInfo.ClientPrincipal.Claims)</label>
+            <ul class="list-group">
+                @foreach (var claim in this._userInfo!.ClientPrincipal!.Claims!)
+                {
+                    <li class="list-group-item">
+                        <span class="badge bg-primary">@claim</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    <div class="mb-3">
+        <label class="form-label">@nameof(this._userInfo.ClientPrincipal.UserId)</label>
+        <span class="form-label">@this._userInfo.ClientPrincipal.UserId</span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">@nameof(this._userInfo.ClientPrincipal.UserDetails)</label>
+        <span class="form-label">@this._userInfo.ClientPrincipal.UserDetails</span>
+    </div>
+    @if (this._userInfo.ClientPrincipal.UserRoles?.Length > 0)
+    {
+        <div class="mb-3">
+            <label class="form-label">@nameof(this._userInfo.ClientPrincipal.UserRoles)</label>
+            <ul class="list-group">
+                @foreach (var role in this._userInfo.ClientPrincipal.UserRoles)
+                {
+                    <li class="list-group-item">
+                        <span class="badge bg-primary">@role</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+}
