@@ -16,13 +16,11 @@
         <InputText class="form-control" @bind-Value="@this.indexVideoModel.VideoFileName"></InputText>
     </div>
     <div class="mb-3">
-        <label class="form-label">@nameof(IndexVideoModel.VideoSourceUrl)</label>
-        <InputText class="form-control" @bind-Value="@this.indexVideoModel.VideoSourceUrl"></InputText>
-    </div>
-    <div class="mb-3">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </EditForm>
+
+<InputFile class="form-control" OnChange="OnFileSelectedAsync"></InputFile>
 
 @if (this.indexVideoResponseModel != null)
 {

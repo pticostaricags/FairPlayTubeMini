@@ -1,9 +1,12 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using BlazorApp.Shared;
+using BlazorApp.Shared.Helpers;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -20,8 +23,10 @@ namespace Api
         }
 
         [Function("IndexVideo")]
-        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        public async Task<HttpResponseData> RunAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             IndexVideoModel model = await req.ReadFromJsonAsync<IndexVideoModel>();
             var requestUrl = Environment.GetEnvironmentVariable("url_ladevindexvideo");
