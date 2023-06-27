@@ -27,7 +27,7 @@ namespace Api
             var videoFileName = query["videoFileName"];
             var userId = query["userId"];
             var fileRelativePath = UserBlobsHelper.GetBlobRelativePath(userId, videoFileName);
-            var blobStorageConnectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+            var blobStorageConnectionString = Environment.GetEnvironmentVariable("UsersStorageConnectionString");
             BlobServiceClient blobServiceClient = new(blobStorageConnectionString);
             var blobClient = blobServiceClient.GetBlobContainerClient("videos")
                     .GetBlobClient(fileRelativePath);

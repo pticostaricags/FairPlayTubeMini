@@ -26,21 +26,35 @@ namespace BlazorApp.Client.Pages.User
 
         private async void OnFileSelectedAsync(InputFileChangeEventArgs inputFileChangeEventArgs)
         {
-            this.indexVideoModel.VideoSourceUrl = null;
-            this.selectedFileBytes = null;
-            var maxbytesAllowed = 300 * 1024 * 1024;
-            var stream = inputFileChangeEventArgs.File.OpenReadStream(maxbytesAllowed);
-            MemoryStream memoryStream = new();
-            await stream.CopyToAsync(memoryStream);
-            this.selectedFileBytes = memoryStream.ToArray();
-            var state = await this.AuthenticationStateTask!;
-            var userName = state.User.Identity!.Name;
-            var sasUrlModel = await this.HttpClient!
-                .GetFromJsonAsync<GenerateVideoSasUrlResponseModel>
-                ($"/api/GenerateVideoSasUrl?" +
-                $"videoFileName={this.indexVideoModel.VideoFileName}" +
-                $"&userId={userName}");
-            this.indexVideoModel.VideoSourceUrl = sasUrlModel!.VideoSasUrl;
+            try
+            {
+                this.IsBusy = true;
+                StateHasChanged();
+                this.indexVideoModel.VideoSourceUrl = null;
+                this.selectedFileBytes = null;
+                var maxbytesAllowed = 300 * 1024 * 1024;
+                var stream = inputFileChangeEventArgs.File.OpenReadStream(maxbytesAllowed);
+                MemoryStream memoryStream = new();
+                await stream.CopyToAsync(memoryStream);
+                this.selectedFileBytes = memoryStream.ToArray();
+                var state = await this.AuthenticationStateTask!;
+                var userName = state.User.Identity!.Name;
+                var sasUrlModel = await this.HttpClient!
+                    .GetFromJsonAsync<GenerateVideoSasUrlResponseModel>
+                    ($"/api/GenerateVideoSasUrl?" +
+                    $"videoFileName={this.indexVideoModel.VideoFileName}" +
+                    $"&userId={userName}");
+                this.indexVideoModel.VideoSourceUrl = sasUrlModel!.VideoSasUrl;
+            }
+            catch (Exception ex)
+            {
+                this.ToastService!.ShowError(ex.Message);
+            }
+            finally
+            {
+                this.IsBusy = false;
+                StateHasChanged();
+            }
         }
         private async Task OnValidSubmitAsync()
         {
