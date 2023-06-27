@@ -1,0 +1,17 @@
+﻿@page "/Admin/ListUsers"
+@attribute [Authorize(Roles = "admin")]
+<h3>ListUsers</h3>
+
+<LoadingIndicator IsLoading="this.IsBusy"></LoadingIndicator>
+
+@if (this.Users != null)
+{
+    <ul class="list-group">
+        @foreach (var singleUser in this.Users.value)
+        {
+            <li class="list-group-item">
+                @singleUser.Username
+            </li>
+        }
+    </ul>
+}
