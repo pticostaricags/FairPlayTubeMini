@@ -1,0 +1,32 @@
+﻿@page "/VideosList"
+<h3>VideosList</h3>
+
+<LoadingIndicator IsLoading="this.IsBusy"></LoadingIndicator>
+
+
+@if (this.SearchResults != null)
+{
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            @foreach (var singleItem in this.SearchResults.results)
+            {
+                <div class="col">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <div class="embed-responsive embed-responsive-1by1">
+                                <iframe class="embed-responsive-item video-indexer-widget" style="width:100%; height:350px;"
+                                        src="@singleItem.publicPlayerUrl"
+                                        frameborder="0"
+                                        allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (this.SearchResults.nextPage.done == false)
+        {
+            <button type="button" class="btn btn-primary" @onclick="OnNextPageButtonClickedAsync">Next Page</button>
+        }
+    </div>
+}
