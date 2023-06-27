@@ -24,7 +24,7 @@ namespace Api
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             IndexVideoModel model = await req.ReadFromJsonAsync<IndexVideoModel>();
-            var requestUrl = Environment.GetEnvironmentVariable("url-ladevindexvideo");
+            var requestUrl = Environment.GetEnvironmentVariable("url_ladevindexvideo");
             HttpClient httpClient = new HttpClient();
             var logicAppResponse = await httpClient.PostAsJsonAsync(requestUrl, model);
             logicAppResponse.EnsureSuccessStatusCode();
