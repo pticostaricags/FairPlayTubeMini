@@ -19,7 +19,6 @@ namespace BlazorApp.Client.Pages.Admin
             try
             {
                 this.IsBusy = true;
-                await Task.Delay(TimeSpan.FromHours(20));
                 string baseAddress=$"{NavigationManager!.BaseUri}";
                 HttpClient httpClient = new HttpClient()
                 {
