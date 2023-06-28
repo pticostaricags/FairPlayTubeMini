@@ -1,5 +1,5 @@
 ﻿@page "/Creator/EditVideoInsights/{VideoId}"
-@attribute [Authorize(Roles = "creator")]
+@attribute [Authorize(Roles = BlazorApp.Shared.Constants.Roles.creator)]
 <h3>EditVideoInsights</h3>
 <LoadingIndicator IsLoading="@this.IsLoading"></LoadingIndicator>
 

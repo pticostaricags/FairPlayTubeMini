@@ -1,5 +1,5 @@
 ﻿@page "/User/Profile"
-@attribute [Authorize]
+@attribute [Authorize(Roles = BlazorApp.Shared.Constants.Roles.authenticated)]
 
 <h3>Profile</h3>
 

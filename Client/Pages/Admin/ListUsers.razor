@@ -1,5 +1,5 @@
 ﻿@page "/Admin/ListUsers"
-@attribute [Authorize(Roles = "admin")]
+@attribute [Authorize(Roles = BlazorApp.Shared.Constants.Roles.admin)]
 <h3>ListUsers</h3>
 
 <LoadingIndicator IsLoading="this.IsBusy"></LoadingIndicator>

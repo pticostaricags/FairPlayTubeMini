@@ -2,6 +2,7 @@
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Routes = BlazorApp.Shared.Constants.Routes;
 
 namespace BlazorApp.Client.Pages
 {
@@ -24,15 +25,30 @@ namespace BlazorApp.Client.Pages
                 var state = await this.AuthenticationStateTask!;
                 if (state?.User?.Identity?.IsAuthenticated == true)
                 {
-                    if (state.User.IsInRole("creator"))
+                    if (state.User.IsInRole(BlazorApp.Shared.Constants.Roles.admin))
                     {
-                        this.MenuGridItems = 
-                        this.MenuGridItems.Union(new MenuGrid.MenuGridItem[] 
+                        this.MenuGridItems =
+                        this.MenuGridItems.Union(new MenuGrid.MenuGridItem[]
+                        {
+                            new MenuGrid.MenuGridItem()
+                            {
+                                CssClass="bi bi-people-fill",
+                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.ListUsers)),
+                                ShowTitleBelowIcon=true,
+                                Title="List Users"
+                            }
+                        })
+                        .ToArray();
+                    }
+                    if (state.User.IsInRole(BlazorApp.Shared.Constants.Roles.creator))
+                    {
+                        this.MenuGridItems =
+                        this.MenuGridItems.Union(new MenuGrid.MenuGridItem[]
                         {
                             new MenuGrid.MenuGridItem()
                             {
                                 CssClass="bi bi-cloud-upload-fill",
-                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo("/User/UploadVideo")),
+                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.UploadVideo)),
                                 ShowTitleBelowIcon=true,
                                 Title="Upload Video"
                             }
@@ -40,19 +56,18 @@ namespace BlazorApp.Client.Pages
                         .ToArray();
                     }
                 }
-                else
-                {
-                    this.MenuGridItems = new MenuGrid.MenuGridItem[]
-                    {
-                        new MenuGrid.MenuGridItem()
+                this.MenuGridItems =
+                        this.MenuGridItems.Union(new MenuGrid.MenuGridItem[]
                         {
-                            Title="Videos List",
-                            CssClass="bi bi-play-btn-fill",
-                            ShowTitleBelowIcon=true,
-                            OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo("/VideosList")),
-                        }
-                    };
-                }
+                            new MenuGrid.MenuGridItem()
+                            {
+                                Title="Videos List",
+                                CssClass="bi bi-play-btn-fill",
+                                ShowTitleBelowIcon=true,
+                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.VideosList)),
+                            }
+                        })
+                        .ToArray();
             }
             catch (Exception ex)
             {
