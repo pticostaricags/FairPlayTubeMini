@@ -1,31 +1,41 @@
-﻿@using Blazored.Toast.Configuration;
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <Authorized>
-                    <a href="/.auth/logout">Log out</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a href="/.auth/login/github">Login</a>
-                </NotAuthorized>
-            </AuthorizeView>
+<div class="main-page-grid">
+    <div class="main-page-header">
+        <div class="nav-bar-section">
+            <div class="nav-bar-icon">
+                <AuthorizeView>
+                    <Authorized>
+                        <a href="/.auth/logout">Log out</a>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="/.auth/login/github">Login</a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
         </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+        <div class="logo-section">
+            <div class="logo-image">
+                <a href="/">
+                    <i class="bi bi-house-door-fill"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main-page-content">
+        <ErrorBoundary>
+            <ChildContent>
+                @Body
+            </ChildContent>
+            <ErrorContent>
+                @context.ToString()
+            </ErrorContent>
+        </ErrorBoundary>
+    </div>
+    <div class="footer-section">
+        <div class="footer-icons-section">
+        </div>
+    </div>
 </div>
-<BlazoredToasts Position="ToastPosition.TopRight"
-                Timeout="10"
-                IconType="IconType.FontAwesome"
-                SuccessClass="success-toast-override"
-                SuccessIcon="fa fa-thumbs-up"
-                ErrorIcon="fa fa-bug" />
+
+<BlazoredToasts Position="Blazored.Toast.Configuration.ToastPosition.TopRight" Timeout="10"></BlazoredToasts>

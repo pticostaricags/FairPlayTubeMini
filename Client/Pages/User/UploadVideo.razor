@@ -1,6 +1,6 @@
 ﻿@page "/User/UploadVideo"
 @using BlazorApp.Shared;
-@attribute [Authorize]
+@attribute [Authorize(Roles = "creator")]
 
 <h3>UploadVideo</h3>
 

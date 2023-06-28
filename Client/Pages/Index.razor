@@ -2,14 +2,8 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Welcome</h1>
+<h1>Index</h1>
 
-<AuthorizeView>
-    <Authorized>
-        <p>Hello, @context.User.Identity!.Name!</p>
-        <p>You can see this because you are authenticated.</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>You're not authenticated. Please login</p>
-    </NotAuthorized>
-</AuthorizeView>
+<LoadingIndicator IsLoading="this.IsBusy"></LoadingIndicator>
+
+<MenuGrid MenuItems="this.MenuGridItems"></MenuGrid>
