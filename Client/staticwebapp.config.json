@@ -13,7 +13,15 @@
     },
     {
       "route": "/data-api/rest/ApplicationUser",
-      "allowedRoles": ["admin"]
+      "allowedRoles": [ "admin" ]
+    },
+    {
+      "route": "/api/IndexVideo",
+      "allowedRoles": [ "creator" ]
+    },
+    {
+      "route": "/User/UploadVideo",
+      "allowedRoles": [ "creator" ]
     }
   ],
   "responseOverrides": {
