@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{C
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{DBFF482C-4A90-43F6-9430-39E002DF2804}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "swa-db-connections", "swa-db-connections", "{85C7ED5A-893B-40F8-ACC9-ED5955BAD8A6}"
+	ProjectSection(SolutionItems) = preProject
+		swa-db-connections\staticwebapp.database.config.json = swa-db-connections\staticwebapp.database.config.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

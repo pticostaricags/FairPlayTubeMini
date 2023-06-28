@@ -29,11 +29,11 @@
     }
   },
   "entities": {
-    "ApplicationUser": {
+    "UsersList": {
       "source": "dbo.applicationuser",
       "permissions": [
         {
-          "actions": [ "*" ],
+          "actions": [ "read" ],
           "role": "anonymous"
         }
       ]

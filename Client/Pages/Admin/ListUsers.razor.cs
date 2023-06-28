@@ -24,7 +24,7 @@ namespace BlazorApp.Client.Pages.Admin
                 {
                     BaseAddress = new Uri(baseAddress)
                 };
-                this.Users = await httpClient.GetFromJsonAsync<ApplicationUserList>("data-api/rest/ApplicationUser");
+                this.Users = await httpClient.GetFromJsonAsync<ApplicationUserList>("data-api/rest/UsersList");
             }
             catch (Exception ex)
             {

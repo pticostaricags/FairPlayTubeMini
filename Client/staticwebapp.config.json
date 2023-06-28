@@ -12,7 +12,7 @@
       "statusCode": 404
     },
     {
-      "route": "/data-api/rest/ApplicationUser",
+      "route": "/data-api/rest/UsersList",
       "allowedRoles": [ "admin" ]
     },
     {
