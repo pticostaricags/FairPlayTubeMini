@@ -25,6 +25,10 @@ namespace BlazorApp.Shared
         private const string location = "eastus";
         public string publicPlayerUrl => $"https://www.videoindexer.ai/embed/player/{accountId}/{id}" +
         $"?locale={CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}&location={location}&autoplay=false";
+        public string publicInsightsUrl => $"https://www.videoindexer.ai/embed/insights/{accountId}/{id}" +
+            $"?locale={CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}&location={location}&language={CultureInfo.CurrentUICulture.Name}";
+        public string editAccessToken { get; set; }
+        public string privateInsightsUrl => $"{publicInsightsUrl}&accessToken={editAccessToken}";
         public string accountId { get; set; }
         public string id { get; set; }
         public object partition { get; set; }

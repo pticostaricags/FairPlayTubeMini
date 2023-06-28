@@ -11,5 +11,6 @@ namespace BlazorApp.Shared
         public int? PageNumber { get; set; }
         [Required]
         public string SearchTerm { get; set; }
+        public string VideoId { get; set; }
     }
 }

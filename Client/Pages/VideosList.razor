@@ -18,6 +18,11 @@
                                         src="@singleItem.publicPlayerUrl"
                                         frameborder="0"
                                         allowfullscreen></iframe>
+                                <AuthorizeView Roles="creator">
+                                    <NavLink class="nav-link" href="@($"/Creator/EditVideoInsights/{singleItem.id}")">
+                                        <span class="oi oi-list-rich" aria-hidden="true"></span> Edit Video Insights
+                                    </NavLink>
+                                </AuthorizeView>
                             </div>
                         </div>
                     </div>

@@ -26,10 +26,12 @@ namespace Api
             var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
             var pageNumber = query["pageNumber"];
             var searchTerm = query["searchTerm"];
+            var videoId = query["videoId"] ?? string.Empty;
             SearchVideosModel model = new SearchVideosModel()
             {
                 PageNumber = Convert.ToInt32(pageNumber),
-                SearchTerm = searchTerm
+                SearchTerm = searchTerm,
+                VideoId = videoId
             };
             var requestUrl = Environment.GetEnvironmentVariable("url_ladevsearchvideos");
             HttpClient httpClient = new HttpClient();

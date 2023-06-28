@@ -1,0 +1,14 @@
+﻿@page "/Creator/EditVideoInsights/{VideoId}"
+@attribute [Authorize(Roles = "creator")]
+<h3>EditVideoInsights</h3>
+<LoadingIndicator IsLoading="@this.IsLoading"></LoadingIndicator>
+
+@if (this.SearchVideosResponse != null)
+{
+    <div class="mb-3">
+        <iframe src="@this.SearchVideosResponse.results[0].publicPlayerUrl" height="400" width="400"></iframe>
+    </div>
+    <div class="mb-3">
+        <iframe src="@this.SearchVideosResponse.results[0].privateInsightsUrl" height="400" width="400"></iframe>
+    </div>
+}
