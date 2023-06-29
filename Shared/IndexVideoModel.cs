@@ -8,5 +8,7 @@ namespace BlazorApp.Shared
         public string VideoFileName { get; set; }
         [Required]
         public string VideoSourceUrl { get; set; }
+        [Required]
+        public string Description { get; set; }
     }
 }

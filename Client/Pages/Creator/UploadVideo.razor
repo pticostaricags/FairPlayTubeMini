@@ -1,0 +1,50 @@
+﻿@using BlazorApp.Shared;
+<h3>UploadVideo</h3>
+
+<LoadingIndicator IsLoading="this.IsBusy"></LoadingIndicator>
+
+<EditForm Model="this.indexVideoModel" OnValidSubmit="OnValidSubmitAsync">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <label class="form-label">( @VideoNameRemainingCharacterCount characters remaining )</label>
+        <input type="text" class="form-control" @bind="indexVideoModel.VideoFileName"
+        @bind:event="oninput" maxlength="@VideoNameMaxLength"></input>
+        <ValidationMessage For="() => indexVideoModel.VideoFileName" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <InputTextArea class="form-control" @bind-Value="indexVideoModel.Description"
+                       rows="4" cols="50" maxlength="500"></InputTextArea>
+        <ValidationMessage For="() => indexVideoModel.Description" />
+    </div>
+    @if (!String.IsNullOrWhiteSpace(this.indexVideoModel.VideoFileName))
+    {
+        <div class="mb-3">
+            <InputFile class="form-control" OnChange="@OnFileSelectedAsync" multiple accept="video/*" />
+        </div>
+    }
+    @if (!IsSubmitting && ShowSubmitButton && !String.IsNullOrWhiteSpace(this.indexVideoModel.Description))
+    {
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    }
+</EditForm>
+
+@if (this.indexVideoResponseModel != null)
+{
+    <div class="mb-3">
+        <label class="form-label">@nameof(IndexVideoResponseModel.accountId)</label>
+        <label class="form-label">@this.indexVideoResponseModel.accountId</label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">@nameof(IndexVideoResponseModel.description)</label>
+        <label class="form-label">@this.indexVideoResponseModel.description</label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">@nameof(IndexVideoResponseModel.moderationState)</label>
+        <label class="form-label">@this.indexVideoResponseModel.moderationState</label>
+    </div>
+}

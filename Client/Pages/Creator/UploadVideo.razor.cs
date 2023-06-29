@@ -2,14 +2,17 @@ using Azure.Storage.Blobs;
 using BlazorApp.Shared;
 using BlazorApp.Shared.Helpers;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using System.IO;
 using System.Net.Http.Json;
 
-namespace BlazorApp.Client.Pages.User
+namespace BlazorApp.Client.Pages.Creator
 {
+    [Route(BlazorApp.Shared.Constants.Routes.UploadVideo)]
+    [Authorize(Roles = BlazorApp.Shared.Constants.Roles.creator)]
     public partial class UploadVideo
     {
         [Inject]
@@ -21,38 +24,41 @@ namespace BlazorApp.Client.Pages.User
         private bool IsBusy { get; set; }
         private IndexVideoModel indexVideoModel = new();
         private byte[]? selectedFileBytes;
-
         private IndexVideoResponseModel? indexVideoResponseModel { get; set; }
-
+        public int VideoNameMaxLength { get; set; } = 50;
+        public int VideoNameRemainingCharacterCount => VideoNameMaxLength - this.indexVideoModel?.VideoFileName?.Length ?? 0;
+        private bool IsSubmitting { get; set; } = false;
+        private bool ShowSubmitButton { get; set; } = true;
         private async void OnFileSelectedAsync(InputFileChangeEventArgs inputFileChangeEventArgs)
         {
             try
             {
-                this.IsBusy = true;
+                IsBusy = true;
                 StateHasChanged();
-                this.indexVideoModel.VideoSourceUrl = null;
-                this.selectedFileBytes = null;
+                indexVideoModel.VideoSourceUrl = null;
+                selectedFileBytes = null;
                 var maxbytesAllowed = 300 * 1024 * 1024;
                 var stream = inputFileChangeEventArgs.File.OpenReadStream(maxbytesAllowed);
                 MemoryStream memoryStream = new();
                 await stream.CopyToAsync(memoryStream);
-                this.selectedFileBytes = memoryStream.ToArray();
-                var state = await this.AuthenticationStateTask!;
+                selectedFileBytes = memoryStream.ToArray();
+                var state = await AuthenticationStateTask!;
                 var userName = state.User.Identity!.Name;
-                var sasUrlModel = await this.HttpClient!
+                var sasUrlModel = await HttpClient!
                     .GetFromJsonAsync<GenerateVideoSasUrlResponseModel>
                     ($"/api/GenerateVideoSasUrl?" +
-                    $"videoFileName={this.indexVideoModel.VideoFileName}" +
+                    $"videoFileName={indexVideoModel.VideoFileName}" +
                     $"&userId={userName}");
-                this.indexVideoModel.VideoSourceUrl = sasUrlModel!.VideoSasUrl;
+                indexVideoModel.VideoSourceUrl = sasUrlModel!.VideoSasUrl;
+                this.ShowSubmitButton = true;
             }
             catch (Exception ex)
             {
-                this.ToastService!.ShowError(ex.Message);
+                ToastService!.ShowError(ex.Message);
             }
             finally
             {
-                this.IsBusy = false;
+                IsBusy = false;
                 StateHasChanged();
             }
         }
@@ -60,28 +66,29 @@ namespace BlazorApp.Client.Pages.User
         {
             try
             {
-                this.IsBusy = true;
+                IsBusy = true;
+                this.IsSubmitting = true;
                 StateHasChanged();
-                var state = await this.AuthenticationStateTask!;
+                var state = await AuthenticationStateTask!;
                 var userName = state.User.Identity!.Name;
-                var fileRelativePath = UserBlobsHelper.GetBlobRelativePath(userName, this.indexVideoModel.VideoFileName);
-                BlobClient blobClient = new BlobClient(blobUri: new Uri(this.indexVideoModel.VideoSourceUrl));
-                var uploadFileResponse = await blobClient.UploadAsync(new BinaryData(this.selectedFileBytes!));
-                var response = await this.HttpClient!
-                    .PostAsJsonAsync<IndexVideoModel>("/api/IndexVideo", this.indexVideoModel);
+                var fileRelativePath = UserBlobsHelper.GetBlobRelativePath(userName, indexVideoModel.VideoFileName);
+                BlobClient blobClient = new BlobClient(blobUri: new Uri(indexVideoModel.VideoSourceUrl));
+                var uploadFileResponse = await blobClient.UploadAsync(new BinaryData(selectedFileBytes!));
+                var response = await HttpClient!
+                    .PostAsJsonAsync("/api/IndexVideo", indexVideoModel);
                 if (response.IsSuccessStatusCode)
                 {
-                    this.indexVideoResponseModel =
+                    indexVideoResponseModel =
                         await response.Content.ReadFromJsonAsync<IndexVideoResponseModel>();
                 }
             }
             catch (Exception ex)
             {
-                this.ToastService!.ShowError(ex.Message);
+                ToastService!.ShowError(ex.Message);
             }
             finally
             {
-                this.IsBusy = false;
+                IsBusy = false;
                 StateHasChanged();
             }
         }
