@@ -1,4 +1,5 @@
 ﻿using BlazorApp.Client.Components;
+using BlazorApp.Client.Services;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,7 +14,7 @@ namespace BlazorApp.Client.Pages
         [Inject]
         private IToastService? ToastService { get; set; }
         [Inject]
-        private NavigationManager? NavigationManager { get; set; }
+        private INavigationService? NavigationService { get; set; }
         private bool IsBusy { get; set; }
         private MenuGrid.MenuGridItem[] MenuGridItems = new MenuGrid.MenuGridItem[0];
 
@@ -33,7 +34,8 @@ namespace BlazorApp.Client.Pages
                             new MenuGrid.MenuGridItem()
                             {
                                 CssClass="bi bi-people-fill",
-                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.ListUsers)),
+                                OnClick=new EventCallback(this,()=>this.NavigationService!
+                                .NavigateToListUsers()),
                                 ShowTitleBelowIcon=true,
                                 Title="List Users"
                             }
@@ -48,7 +50,8 @@ namespace BlazorApp.Client.Pages
                             new MenuGrid.MenuGridItem()
                             {
                                 CssClass="bi bi-cloud-upload-fill",
-                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.UploadVideo)),
+                                OnClick=new EventCallback(this,()=>this.NavigationService!
+                                .NavigateToUploadVideo()),
                                 ShowTitleBelowIcon=true,
                                 Title="Upload Video"
                             }
@@ -64,7 +67,8 @@ namespace BlazorApp.Client.Pages
                                 Title="Videos List",
                                 CssClass="bi bi-play-btn-fill",
                                 ShowTitleBelowIcon=true,
-                                OnClick=new EventCallback(this,()=>this.NavigationManager!.NavigateTo(Routes.VideosList)),
+                                OnClick=new EventCallback(this,()=>this.NavigationService!
+                                .NavigateToVideosList()),
                             }
                         })
                         .ToArray();

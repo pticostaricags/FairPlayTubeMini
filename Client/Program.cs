@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using BlazorApp.Client.CustomProviders;
 using System.ComponentModel.DataAnnotations;
 using Blazored.Toast;
+using BlazorApp.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,4 +26,5 @@ builder.Services.AddAuthorizationCore()
     });
 
 builder.Services.AddBlazoredToast();
+builder.Services.AddTransient<INavigationService, NavigationService>();
 await builder.Build().RunAsync();

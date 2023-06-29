@@ -1,10 +1,14 @@
+using BlazorApp.Shared.Constants;
 using BlazorApp.Shared.DataModels;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace BlazorApp.Client.Pages.Admin
 {
+    [Route(BlazorApp.Shared.Constants.Routes.ListUsers)]
+    [Authorize(Roles = BlazorApp.Shared.Constants.Roles.admin)]
     public partial class ListUsers
     {
         [Inject]
