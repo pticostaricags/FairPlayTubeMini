@@ -29,6 +29,7 @@ namespace BlazorApp.Client.Pages.Creator
         public int VideoNameRemainingCharacterCount => VideoNameMaxLength - this.indexVideoModel?.VideoFileName?.Length ?? 0;
         private bool IsSubmitting { get; set; } = false;
         private bool ShowSubmitButton { get; set; } = true;
+        private int UploadProgress { get; set; } = 0;
         private async void OnFileSelectedAsync(InputFileChangeEventArgs inputFileChangeEventArgs)
         {
             try
@@ -73,7 +74,17 @@ namespace BlazorApp.Client.Pages.Creator
                 var userName = state.User.Identity!.Name;
                 var fileRelativePath = UserBlobsHelper.GetBlobRelativePath(userName, indexVideoModel.VideoFileName);
                 BlobClient blobClient = new BlobClient(blobUri: new Uri(indexVideoModel.VideoSourceUrl));
-                var uploadFileResponse = await blobClient.UploadAsync(new BinaryData(selectedFileBytes!));
+                var uploadFileResponse = await blobClient.UploadAsync(new BinaryData(selectedFileBytes!),
+                    options: new Azure.Storage.Blobs.Models.BlobUploadOptions()
+                    {
+                        ProgressHandler = new Progress<long>(async (long bytesTransferred) =>
+                        {
+                            await InvokeAsync(() =>
+                            {
+                                UploadProgress = selectedFileBytes!.Length == 0 ? 0 : (int)((bytesTransferred / selectedFileBytes!.Length) * 100);
+                            });
+                        })
+                    });
                 var response = await HttpClient!
                     .PostAsJsonAsync("/api/IndexVideo", indexVideoModel);
                 if (response.IsSuccessStatusCode)
