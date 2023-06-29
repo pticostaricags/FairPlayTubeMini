@@ -1,1 +1,1 @@
-swa start --app-devserver-url http://localhost:7025 --api-devserver-url http://localhost:7071 --data-api-location swa-db-connections
+swa start --app-devserver-url http://localhost:7025 --api-devserver-url http://localhost:7071 --data-api-location swa-db-connections --open
