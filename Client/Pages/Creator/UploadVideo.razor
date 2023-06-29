@@ -25,7 +25,9 @@
             <InputFile class="form-control" OnChange="@OnFileSelectedAsync" multiple accept="video/*" />
         </div>
     }
-    @if (!IsSubmitting && ShowSubmitButton && !String.IsNullOrWhiteSpace(this.indexVideoModel.Description))
+    @if (!IsSubmitting && ShowSubmitButton && 
+    !String.IsNullOrWhiteSpace(this.indexVideoModel.Description) &&
+    !String.IsNullOrWhiteSpace(this.indexVideoModel.VideoSourceUrl))
     {
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Submit</button>
