@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[VideoInfo]
 (
-	[VideoInfoId] BIGINT NOT NULL CONSTRAINT PK_VideoInfo PRIMARY KEY, 
+	[VideoInfoId] BIGINT NOT NULL CONSTRAINT PK_VideoInfo PRIMARY KEY IDENTITY, 
     [OwnerApplicationUserId] BIGINT NOT NULL, 
     [AccountId] UNIQUEIDENTIFIER NOT NULL, 
     [VideoId] NVARCHAR(50) NOT NULL, 

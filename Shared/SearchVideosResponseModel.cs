@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorApp.Shared.Constants;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -22,7 +23,7 @@ namespace BlazorApp.Shared
     public class Result
     {
         public byte[] thumbnailBytes { get; set; }
-        private const string location = "eastus";
+        private const string location = AzureRegions.VideoIndexerRegion;
         public string publicPlayerUrl => $"https://www.videoindexer.ai/embed/player/{accountId}/{id}" +
         $"?locale={CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}&location={location}&autoplay=false";
         public string publicInsightsUrl => $"https://www.videoindexer.ai/embed/insights/{accountId}/{id}" +

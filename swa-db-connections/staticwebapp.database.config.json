@@ -46,6 +46,15 @@
           "role": "anonymous"
         }
       ]
+    },
+    "CreateVideoInfo": {
+      "source": "dbo.videoinfo",
+      "permissions": [
+        {
+          "actions": [ "create" ],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

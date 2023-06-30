@@ -1,11 +1,13 @@
 using Azure.Storage.Blobs;
 using BlazorApp.Shared;
+using BlazorApp.Shared.DataModels;
 using BlazorApp.Shared.Helpers;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.VisualBasic;
 using System.IO;
 using System.Net.Http.Json;
 
@@ -19,6 +21,8 @@ namespace BlazorApp.Client.Pages.Creator
         private HttpClient? HttpClient { get; set; }
         [Inject]
         private IToastService? ToastService { get; set; }
+        [Inject]
+        private NavigationManager? NavigationManager { get; set; }
         [CascadingParameter]
         private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
         private bool IsBusy { get; set; }
@@ -91,6 +95,28 @@ namespace BlazorApp.Client.Pages.Creator
                 {
                     indexVideoResponseModel =
                         await response.Content.ReadFromJsonAsync<IndexVideoResponseModel>();
+                    string baseAddress = $"{NavigationManager!.BaseUri}";
+                    HttpClient httpClient = new HttpClient()
+                    {
+                        BaseAddress = new Uri(baseAddress)
+                    };
+                    long ownerApplicationUserId = await GetApplicationUserIdAsync(userName, httpClient);
+                    CreateVideoInfo createVideoInfo = new CreateVideoInfo()
+                    {
+                        AccountId = indexVideoResponseModel!.accountId,
+                        Description = indexVideoResponseModel.description,
+                        Location = BlazorApp.Shared.Constants.AzureRegions.VideoIndexerRegion,
+                        Name = indexVideoResponseModel.name,
+                        OwnerApplicationUserId = ownerApplicationUserId!,
+                        VideoId = indexVideoResponseModel.thumbnailVideoId
+                    };
+                    var createVideoResponse = await httpClient!
+                        .PostAsJsonAsync("data-api/rest/CreateVideoInfo", createVideoInfo,
+                        options: new System.Text.Json.JsonSerializerOptions()
+                        {
+                            PropertyNamingPolicy = null
+                        });
+                    createVideoResponse.EnsureSuccessStatusCode();
                 }
             }
             catch (Exception ex)
@@ -102,6 +128,13 @@ namespace BlazorApp.Client.Pages.Creator
                 IsBusy = false;
                 StateHasChanged();
             }
+        }
+
+        private async Task<long> GetApplicationUserIdAsync(string? userName, HttpClient httpClient)
+        {
+            var userEntity = await httpClient!
+                .GetFromJsonAsync<ApplicationUserList>($"data-api/rest/UsersList?$filter={nameof(ApplicationUser.Username)} eq '{userName}'");
+            return userEntity!.value[0].ApplicationUserId;
         }
     }
 }
