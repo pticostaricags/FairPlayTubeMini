@@ -7,4 +7,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ApplicationUserId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="7179ccc1-0470-469f-83e9-8ce6d2f0d07e" ChangeDateTime="06/30/2023 13:25:38">
+    <Property Name="ElementName" Value="[dbo].[VideoInfo].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VideoInfo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="VideoInfoId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1087a351-2942-4b27-b4af-06c4ea1575dc" ChangeDateTime="06/30/2023 13:29:18">
+    <Property Name="ElementName" Value="[dbo].[VideoInfo].[Location]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VideoInfo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PublicPlayerUrl" />
+  </Operation>
 </Operations>
