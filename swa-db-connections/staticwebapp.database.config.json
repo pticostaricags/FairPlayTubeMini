@@ -37,6 +37,15 @@
           "role": "anonymous"
         }
       ]
+    },
+    "AddUser": {
+      "source": "dbo.applicationuser",
+      "permissions": [
+        {
+          "actions": [ "create" ],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

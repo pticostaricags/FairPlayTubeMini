@@ -1,0 +1,15 @@
+﻿@page "/SuccessLogin"
+@attribute [Authorize]
+
+<h3>SuccessLogin</h3>
+
+<AuthorizeView>
+    <Authorized>
+        <ul class="list-group">
+            @foreach (var singleClaim in context.User.Claims)
+            {
+                <li class="list-group-item">@singleClaim.Type - @singleClaim.Value</li>
+            }
+        </ul>
+    </Authorized>
+</AuthorizeView>

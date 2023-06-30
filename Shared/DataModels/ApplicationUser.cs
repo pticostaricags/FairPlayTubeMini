@@ -14,6 +14,13 @@ namespace BlazorApp.Shared.DataModels
     {
         public int ApplicationUserId { get; set; }
         public string Username { get; set; }
+        public string ProviderUserId { get; set; }
+    }
+
+    public class CreateApplicationUser
+    {
+        public string Username { get; set; }
+        public string ProviderUserId { get; set; }
     }
 
 
