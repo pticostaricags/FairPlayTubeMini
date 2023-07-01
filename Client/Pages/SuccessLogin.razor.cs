@@ -1,3 +1,4 @@
+using BlazorApp.Client.Services;
 using BlazorApp.Shared.DataModels;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
@@ -14,10 +15,14 @@ namespace BlazorApp.Client.Pages
         private NavigationManager? NavigationManager { get; set; }
         [Inject]
         private IToastService? ToastService { get; set; }
+        [Inject]
+        private IDatabaseService? DatabaseService { get; set; }
+        private bool IsBusy { get; set; }
         protected override async Task OnInitializedAsync()
         {
             try
             {
+                this.IsBusy = true;
                 var state = await this.AuthenticationStateTask!;
                 //verify if user exists in table
                 var id = state.User!.Claims.Single(p => p.Type == BlazorApp.Shared.Constants.Claims.NameIdentifier)
@@ -27,23 +32,15 @@ namespace BlazorApp.Client.Pages
                 {
                     BaseAddress = new Uri(baseAddress)
                 };
-                var userEntity = await httpClient!
-                    .GetFromJsonAsync<ApplicationUserList>($"data-api/rest/UsersList?$filter={nameof(ApplicationUser.ProviderUserId)} eq '{id}'");
-                if (userEntity!.value.Length == 0)
+                var userEntity = await this.DatabaseService!.GetUsersByProviderUserIdAsync(id);
+                if (userEntity is null)
                 {
                     //If user does not exist, add it since it's first time login
-                    var response = await httpClient!.PostAsJsonAsync<CreateApplicationUser>("data-api/rest/AddUser",
-                        new CreateApplicationUser()
-                        {
-                            Username = state.User!.Identity!.Name,
-                            ProviderUserId = id
-                        },
-                        options:new System.Text.Json.JsonSerializerOptions()
-                        {
-                            PropertyNamingPolicy = null
-                        });
-                    response.EnsureSuccessStatusCode();
-                    userEntity = await response.Content.ReadFromJsonAsync<ApplicationUserList>();
+                    userEntity = await DatabaseService!.AddUserAsync(new CreateApplicationUser()
+                    {
+                        Username = state.User!.Identity!.Name,
+                        ProviderUserId = id
+                    });
                 }
                 this.NavigationManager.NavigateTo("/");
             }
@@ -53,7 +50,7 @@ namespace BlazorApp.Client.Pages
             }
             finally
             {
-
+                this.IsBusy = false;
             }
         }
     }

@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using BlazorApp.Client.Services;
 using BlazorApp.Shared;
 using BlazorApp.Shared.DataModels;
 using BlazorApp.Shared.Helpers;
@@ -23,6 +24,8 @@ namespace BlazorApp.Client.Pages.Creator
         private IToastService? ToastService { get; set; }
         [Inject]
         private NavigationManager? NavigationManager { get; set; }
+        [Inject]
+        private IDatabaseService? DatabaseService { get; set; }
         [CascadingParameter]
         private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
         private bool IsBusy { get; set; }
@@ -132,9 +135,9 @@ namespace BlazorApp.Client.Pages.Creator
 
         private async Task<long> GetApplicationUserIdAsync(string? userName, HttpClient httpClient)
         {
-            var userEntity = await httpClient!
-                .GetFromJsonAsync<ApplicationUserList>($"data-api/rest/UsersList?$filter={nameof(ApplicationUser.Username)} eq '{userName}'");
-            return userEntity!.value[0].ApplicationUserId;
+            var applicationUserId = await this.DatabaseService!.
+                GetApplicationUserIdAsync(userName);
+            return applicationUserId;
         }
     }
 }

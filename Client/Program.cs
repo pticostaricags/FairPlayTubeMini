@@ -19,7 +19,7 @@ builder.Services.AddScoped<IUserProfileService, AzureSWAUserProfileService>(sp =
     return new AzureSWAUserProfileService(env!.BaseAddress);
 });
 builder.Services.AddAuthorizationCore()
-    .AddScoped<AuthenticationStateProvider, AzureSWAAuthenticationStateProvider>(sp => 
+    .AddScoped<AuthenticationStateProvider, AzureSWAAuthenticationStateProvider>(sp =>
     {
         var userProfileService = sp.GetRequiredService<IUserProfileService>();
         return new AzureSWAAuthenticationStateProvider(userProfileService);
@@ -27,4 +27,5 @@ builder.Services.AddAuthorizationCore()
 
 builder.Services.AddBlazoredToast();
 builder.Services.AddTransient<INavigationService, NavigationService>();
+builder.Services.AddTransient<IDatabaseService, DatabaseRestService>();
 await builder.Build().RunAsync();
